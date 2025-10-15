@@ -2,6 +2,7 @@ package tests;
 
 import com.codeborne.selenide.WebDriverRunner;
 import io.restassured.http.ContentType;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Cookie;
 
@@ -15,6 +16,7 @@ public class CartExampleTest {
 
 
     @Test
+    @Tag("cart")
     void cartFillingTest(){
         String userUuid = "test-050920252";
 

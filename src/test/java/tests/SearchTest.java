@@ -2,16 +2,13 @@ package tests;
 
 import base.PageManager;
 import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Cookie;
 
-import java.time.Duration;
-
-import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 import static io.qameta.allure.Allure.step;
@@ -20,21 +17,22 @@ import static io.restassured.RestAssured.given;
 @DisplayName("Web Tests")
 public class SearchTest extends PageManager {
     String target = "Филадельфия Дуэт",
-            item = "филадельфия",
-            scrollArgument = "420";
+            name = "филадельфия",
+            pickupAddress = "ул.Оптиков, д.34 к1 лит А";
 
     @Test
     @DisplayName("Поиск товара")
+    @Tag("search")
     void testProductFindByName() {
         step("Открываем главную страницу", () -> {
             base.openMain();
         });
         step("Находим и открываем страницу товара", () -> {
-            base.setItemSearch(item).
+            base.setItemSearch(name).
                     scrollAndSelectItem(target);
         });
         step("Проверяем отображаемый товар на странице", () -> {
-            base.verifyItemProperty(target);
+            item.verifyItemProperty(target);
         });
     }
     //Arrange
@@ -43,26 +41,25 @@ public class SearchTest extends PageManager {
     @Test
     @DisplayName("Добавление товара в корину")
     void testCart() {
-        String scrollArgument = "420";
-        open("https://spb.setsushi.ru/menu/rolls/filadelfia-duet");
-        $(".button_border").click();
-        $(byText("Самовывоз")).click();
-
-        //  ул.Оптиков, д.34 к1 лит А
-        SelenideElement list = $(".pickup-option")
-                .should(appear, Duration.ofSeconds(10));
-
-        executeJavaScript("arguments[0].scrollTop += " + scrollArgument + ";", list);
-
-        list.$$(".self-item__address")
-                .findBy(text("ул.Оптиков, д.34 к1 лит А"))
-                .shouldBe(visible, enabled)
-                .click();
-
-        $(byText("Выбрать")).click();
-        $(".header_main_cart_button").click();
-        $(".cart_item_info").shouldHave(Condition.text("Филадельфия Дуэт"), Duration.ofSeconds(10));
-        sleep(10_000);
+        step("Открываем главную страницу", () -> {
+            base.openMain();
+        });
+        step("Находим и открываем страницу товара", () -> {
+            base.setItemSearch(name).
+                    scrollAndSelectItem(target);
+        });
+        step("Нажимаем на кнопку добавления товара в корзину", () -> {
+            item.addItemToCart();
+        });
+        step("Выбираем Самовывоз", () -> {
+            item.choosePickupOption();
+        });
+        step("Выбираем адрес для самовывоза", () -> {
+            item.scrollAndSelectAddress();
+        });
+        step("Проверяем наличие выбранного товара в корзине", () -> {
+            item.verifyItemInCart(target);
+        });
     }
 
     @Test

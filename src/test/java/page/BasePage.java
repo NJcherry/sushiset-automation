@@ -1,6 +1,5 @@
 package page;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 
@@ -25,10 +24,10 @@ public class BasePage {
         return this;
     }
 
-    @Step("Ищем товар \"{item}\" в строке поиска")
-    public BasePage setItemSearch(String item) {
+    @Step("Ищем товар \"{name}\" в строке поиска")
+    public BasePage setItemSearch(String name) {
         SEARCH_INPUT.click();
-        SEARCH_INPUT.setValue(item);
+        SEARCH_INPUT.setValue(name);
         return this;
     }
 
@@ -45,12 +44,6 @@ public class BasePage {
                 .closest(SEARCH_OPTION)
                 .shouldBe(visible, enabled)
                 .click();
-        return this;
-    }
-
-    @Step("Проверяем соответствие найденного товара на странице")
-    public BasePage verifyItemProperty(String target) {
-        $("h1").shouldHave(Condition.text(target));
         return this;
     }
 }

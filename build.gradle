@@ -54,3 +54,21 @@ tasks.withType(Test) {
         }
     }
 }
+
+task faker_test(type: Test) {
+    useJUnitPlatform{
+        includeTags "search"
+    }
+}
+
+task faker_test(type: Test) {
+    useJUnitPlatform{
+        includeTags "city"
+    }
+}
+
+task faker_test(type: Test) {
+    useJUnitPlatform{
+        includeTags "cart"
+    }
+}
