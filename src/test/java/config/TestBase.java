@@ -6,14 +6,22 @@ import helpers.Attach;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.util.Map;
+import java.util.UUID;
 
 public class TestBase {
     @BeforeAll
     static void configure() {
         SelenideLogger.addListener("allure", new AllureSelenide());
+
+        ChromeOptions options = new ChromeOptions();
+        // Генерируем уникальный каталог профиля внутри контейнера
+        options.addArguments("--user-data-dir=/tmp/chrome-profile-" + UUID.randomUUID());
+        options.addArguments("--no-sandbox", "--disable-dev-shm-usage", "--no-first-run", "--no-default-browser-check");
+
 
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("selenoid:options", Map.<String, Object>of(
