@@ -55,19 +55,19 @@ tasks.withType(Test) {
     }
 }
 
-task faker_test(type: Test) {
+task search_test(type: Test) {
     useJUnitPlatform{
         includeTags "search"
     }
 }
 
-task faker_test(type: Test) {
+task city_test(type: Test) {
     useJUnitPlatform{
         includeTags "city"
     }
 }
 
-task faker_test(type: Test) {
+task cart_filling_test(type: Test) {
     useJUnitPlatform{
         includeTags "cart"
     }
